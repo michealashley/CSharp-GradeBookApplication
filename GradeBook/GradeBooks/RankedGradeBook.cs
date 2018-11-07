@@ -6,14 +6,15 @@ namespace GradeBook.GradeBooks
 {
     public class RankedGradeBook : BaseGradeBook
     {
+        int numberOfStudents;
         public RankedGradeBook(string name) : base(name)
         {
             Type = GradeBookType.Ranked;
+            numberOfStudents = Students.Count;
         }
 
         public override char GetLetterGrade(double averageGrade)
         {
-            int numberOfStudents = Students.Count;
             if (numberOfStudents < 5)
             {
                 throw new InvalidOperationException("Ranked-grading requires a minimum of 5 students to work." );
@@ -31,6 +32,30 @@ namespace GradeBook.GradeBooks
             else if (gradeOrder[(fifth * 4) - 1] <= averageGrade)
                 return 'D';
             else return 'F';
+        }
+
+        public override void CalculateStatistics()
+        {
+            if (numberOfStudents < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.");
+                return;
+            } else
+            {
+                base.CalculateStatistics();
+            }
+            
+        }
+
+        public override void CalculateStudentStatistics(string name)
+        {
+            if (numberOfStudents < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.");
+                return;
+            }
+            else
+                base.CalculateStudentStatistics(name);
         }
     }
 }
